@@ -1,0 +1,181 @@
+using InHouseTSM_Khopoli.DataLayer;
+using InHouseTSM_Khopoli.Models;
+using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
+using System.Threading.Tasks;
+
+namespace InHouseTSM_Khopoli.Controllers
+{
+    public class HomeController : Controller
+    {
+        private readonly ApplicationDbContext _context;
+        public HomeController(ApplicationDbContext context)
+        {
+            _context = context;
+            
+        }
+
+        public IActionResult Login()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Login(string newEmployeeID,string password)
+        {
+           
+                var user = _context.PIMSUSER.FirstOrDefault(u => u.NewEmployeeID == newEmployeeID && u.Password == password);
+            if (user != null) 
+            {
+                    return RedirectToAction("TubeMillDashboard", "Home");
+                }
+                
+            
+            else
+            {
+                ViewData["ErrorMessage"] = "Invalid username or password,Please Enter Valid Credential";
+                return View();
+
+            }
+           
+
+        }
+
+        public async Task<IActionResult> TubeMillDashboard()
+        {
+            var latestReadingsTM1 = await _context.TubeMill_1
+          .OrderByDescending(t => t.Timestamp)
+          .Take(5)
+          .ToListAsync();
+            var latestReadingsTM2 = await _context.TubeMill_2
+           .OrderByDescending(t => t.Timestamp)
+           .Take(5)
+           .ToListAsync();
+            var latestReadingsTM3 = await _context.TubeMill_3
+          .OrderByDescending(t => t.Timestamp)
+          .Take(5)
+          .ToListAsync();
+            var latestReadingsTM4 = await _context.TubeMill_4
+        .OrderByDescending(t => t.Timestamp)
+        .Take(5)
+        .ToListAsync();
+            var latestReadingsTM7 = await _context.TubeMill_7
+         .OrderByDescending(t => t.Timestamp)
+         .Take(5)
+         .ToListAsync();
+
+            var viewModel = new MillParametersViewModel
+            {
+                VoltagePercentage = new ParameterReadings
+                {
+                    TM1Value= (double)latestReadingsTM1.First().Voltage_Percentage,
+                    TM2Value = (double)latestReadingsTM2.First().Voltage_Percentage,
+                    TM3Value = (double)latestReadingsTM3.First().Voltage_Percentage,
+                    TM4Value = (double)latestReadingsTM4.First().Voltage_Percentage,
+                    TM7Value = (double)latestReadingsTM7.First().Voltage_Percentage
+                    
+                    // Add other TM values as needed
+                },
+                CurrentPercentage = new ParameterReadings
+                {
+                    TM1Value = (double)latestReadingsTM1.First().Current_Percentage,
+                    TM2Value = (double)latestReadingsTM2.First().Current_Percentage,
+                    TM3Value = (double)latestReadingsTM3.First().Current_Percentage,
+                    TM4Value = (double)latestReadingsTM4.First().Current_Percentage,
+                    TM7Value = (double)latestReadingsTM7.First().Current_Percentage
+
+                    // Add other TM values as needed
+                },
+                LineSpeed = new ParameterReadings
+                {
+                    TM1Value = latestReadingsTM1.First().LineSpeed.HasValue ?
+                               (double)latestReadingsTM1.First().LineSpeed : 0.0,
+                    TM2Value = (double)latestReadingsTM2.First().LineSpeed,
+                    TM3Value = latestReadingsTM3.First().LineSpeed.HasValue ?
+                               (double)latestReadingsTM3.First().LineSpeed : 0.0,
+                    TM4Value = (double)latestReadingsTM4.First().LineSpeed,
+                    TM7Value = latestReadingsTM7.First().LineSpeed.HasValue?
+                               (double)latestReadingsTM7.First().LineSpeed :0.0
+                },
+                HfWelderPower = new ParameterReadings
+                {
+                    TM1Value = (double)latestReadingsTM1.First().Actual_kW,
+                    TM2Value = (double)latestReadingsTM2.First().Actual_kW,
+                    TM3Value = latestReadingsTM3.First().Actual_kW.HasValue ?
+                               (double)latestReadingsTM3.First().Actual_kW : 0.0,
+                    TM4Value = (double)latestReadingsTM4.First().Actual_kW,
+                    TM7Value = (double)latestReadingsTM7.First().Actual_kW
+
+                },
+                ActualFrequency = new ParameterReadings
+                {
+                    TM1Value = (double)latestReadingsTM1.First().Actual_Frequency,
+                    TM2Value = (double)latestReadingsTM2.First().Actual_Frequency,
+                    TM3Value = latestReadingsTM3.First().Actual_Frequency.HasValue ?
+                               (double)latestReadingsTM3.First().Actual_Frequency: 0.0,
+                    TM4Value = (double)latestReadingsTM4.First().Actual_Frequency,
+                    TM7Value = (double)latestReadingsTM7.First().Actual_Frequency
+
+                },
+                FormingMotorCurrent = new ParameterReadings
+                {
+                    
+                    TM3Value = latestReadingsTM3.First().Forming_Motor_Current.HasValue ?
+                               (double)latestReadingsTM3.First().Forming_Motor_Current : 0.0,
+                    TM7Value = latestReadingsTM7.First().Forming_Motor_Current.HasValue ?
+                               (double)latestReadingsTM7.First().Forming_Motor_Current : 0.0,
+
+
+                },
+
+                 FinepassMotorCurrent = new ParameterReadings
+                 {
+
+                     TM3Value = latestReadingsTM3.First().Finepass_Motor_Current.HasValue ?
+                               (double)latestReadingsTM3.First().Finepass_Motor_Current : 0.0,
+                     TM7Value = latestReadingsTM7.First().Finepass_Motor_Current.HasValue ?
+                               (double)latestReadingsTM7.First().Finepass_Motor_Current : 0.0,
+
+
+                 },
+                SizingMotorCurrent = new ParameterReadings
+                {
+
+                    TM3Value = latestReadingsTM3.First().Sizing_Motor_Current.HasValue ?
+                               (double)latestReadingsTM3.First().Sizing_Motor_Current : 0.0,
+                    TM7Value = latestReadingsTM7.First().Finepass_Motor_Current.HasValue ?
+                               (double)latestReadingsTM7.First().Finepass_Motor_Current : 0.0,
+
+
+                },
+                EPRMotorCurrent = new ParameterReadings
+                {
+
+                    TM3Value = latestReadingsTM3.First().EPR_Motor_Current.HasValue ?
+                               (double)latestReadingsTM3.First().EPR_Motor_Current : 0.0,
+                    TM7Value = latestReadingsTM7.First().EPR_Motor_Current.HasValue ?
+                               (double)latestReadingsTM7.First().EPR_Motor_Current : 0.0,
+
+
+                },
+                TTMotorCurrent = new ParameterReadings
+                {
+
+                    TM3Value = latestReadingsTM3.First().TT_Motor_Current.HasValue ?
+                               (double)latestReadingsTM3.First().TT_Motor_Current : 0.0,
+                    TM7Value = latestReadingsTM7.First().TT_Motor_Current.HasValue ?
+                               (double)latestReadingsTM7.First().TT_Motor_Current : 0.0,
+
+
+                }
+
+
+            };
+
+            return View(viewModel);
+        }
+
+
+    }
+}
