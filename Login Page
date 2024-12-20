@@ -1,0 +1,37 @@
+@model InHouseTSM_Khopoli.Models.LoginViewModel
+<link href="~/css/Login.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+<link href="~/css/Login.css" rel="stylesheet" />
+
+<div class="login-container d-flex justify-content-center align-items-center vh-100">
+    <div class="login-card shadow-lg">
+        <div class="login-header d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center">
+                <img src="~/images/Tata_Steel_Icon.ico" alt="Tata Steel Icon" class="icon-logo me-2">
+                
+            </div>
+        </div>
+        <div class="login-body text-center mt-3">
+            <img src="~/images/demo.jpg" alt="demo" class="main-logo mb-3">
+            <h4 class="text-white">Welcome To Tube Dashboard Login </h4>
+            <p class="text-light">Please Login</p>
+        </div>
+        @using (Html.BeginForm("Login", "Home", FormMethod.Post, new { @class = "needs-validation", novalidate = "novalidate" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-group mb-3">
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                    @Html.TextBoxFor(m => m.NewEmployeeID, new { @class = "form-control", placeholder = "EmployeeID", required = "required" })
+                </div>
+            </div>
+            <div class="form-group mb-3">
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Password", required = "required" })
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Login</button>
+        }
+    </div>
+</div>
