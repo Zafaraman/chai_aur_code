@@ -1,0 +1,375 @@
+@model MillParametersViewModel
+@{
+    ViewData["Title"] = "TubeMill 2 Parameters";
+}
+ <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+ <div class="top-most-right">
+    <button type="button" class="btn btn-primary shadow-sm  top-left-button fw-bold" onclick="redirectToPage()">Go To Advance View Page</button>
+    <button type="button" id="logoutBtn" class="btn btn-warning shadow-sm  fw-bold" onclick="redirectToLoginPage()">Log Out</button>
+ </div>
+<div class="container mt-4">
+    <h3>TubeMill Dashbaord</h3>
+    <h5 class="custom-3">The data is displayed as an average of 2 minutes</h5>
+   
+    <div class="row">
+        <div class="col-12">
+            <!-- Added header with mill identifier -->
+          @*   <div class="mill-header">
+                <h2 class="mb-4">TUBEMILL  PARAMETERS</h2>
+                <div class="mill-legend">
+                    <div class="legend-item">
+                        <span class="color-box tm1"></span>
+                        <span>TubeMill 1</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="color-box tm2"></span>
+                        <span>TubeMill 2 </span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="color-box tm3"></span>
+                        <span>TubeMill 3</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="color-box tm4"></span>
+                        <span>TubeMill 4</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="color-box tm7"></span>
+                        <span>TubeMill 7</span>
+                    </div>
+                </div>
+            </div> *@
+          @*   //Heading for TubeMill *@
+
+              <div class="parameter-row">
+                <div class="parameter-label">
+                    <span>Tube Mill </span>
+                    <span class="unit-label"></span>
+                    @* <span>MILL CONDITION</span>
+                    <span class="unit-label">START/STOP</span> *@
+                </div>
+                 
+                <div class="readings-heading">
+                    <div class="TM1reading-box">TM1</div>
+                    <div class="TM2reading-box">TM2</div>
+                    <div class="TM3reading-box">TM3</div>
+                    <div class="TM4reading-box">TM4</div>
+                    <div class="TM7reading-box">TM7</div>
+                </div>
+            </div>
+            <!-- Voltage Percentage -->
+          
+            <div class="parameter-row">
+                <div class="parameter-label">
+                    <span>Voltage Percentage</span>
+                    <span class="unit-label">%</span>
+                    @* <span>MILL CONDITION</span>
+                    <span class="unit-label">START/STOP</span> *@
+                </div>
+                 
+                <div class="readings-container">
+                    <div class="reading-box tm1">@Model.VoltagePercentage.TM1Value.ToString("F2")</div>
+                    <div class="reading-box tm2">@Model.VoltagePercentage.TM2Value.ToString("F2")</div>
+                    <div class="reading-box tm3">@Model.VoltagePercentage.TM3Value.ToString("F2")</div>
+                    <div class="reading-box tm4">@Model.VoltagePercentage.TM4Value.ToString("F2")</div>
+                    <div class="reading-box tm7">@Model.VoltagePercentage.TM7Value.ToString("F2")</div>
+                </div>
+            </div>
+
+            <!-- Current Percentage -->
+            <div class="parameter-row">
+                <div class="parameter-label">
+                    <span>Current Percentage</span>
+                    <span class="unit-label">%</span>
+                    @* <span>MILL CONDITION</span>
+                    <span class="unit-label">START/STOP</span> *@
+                </div>
+                <div class="readings-container">
+                    <div class="reading-box tm1">@Model.CurrentPercentage.TM1Value.ToString("F2")</div>
+                    <div class="reading-box tm2">@Model.CurrentPercentage.TM2Value.ToString("F2")</div>
+                    <div class="reading-box tm3">@Model.CurrentPercentage.TM3Value.ToString("F2")</div>
+                    <div class="reading-box tm4">@Model.CurrentPercentage.TM4Value.ToString("F2")</div>
+                    <div class="reading-box tm7">@Model.CurrentPercentage.TM7Value.ToString("F2")</div>
+                </div>
+            </div>
+
+            <!-- Line Speed -->
+            <div class="parameter-row">
+                <div class="parameter-label">
+                    <span>LINE SPEED</span>
+                    <span class="unit-label">MPM</span>
+                </div>
+                <div class="readings-container">
+                    <div class="reading-box tm1">N/A</div>
+                    <div class="reading-box tm2 ">@Model.LineSpeed.TM2Value.ToString("F2")</div>
+                    <div class="reading-box tm3">@Model.LineSpeed.TM3Value.ToString("F2")</div>
+                    <div class="reading-box tm4">@Model.LineSpeed.TM4Value.ToString("F2")</div>
+                    <div class="reading-box tm7">@Model.LineSpeed.TM7Value.ToString("F2")</div>
+                </div>
+            </div>
+
+            <!-- HF Welder Power -->
+            <div class="parameter-row">
+                <div class="parameter-label">
+                    <span>HF WELDER POWER</span>
+                    <span class="unit-label">KW</span>
+                </div>
+                <div class="readings-container">
+                    <div class="reading-box tm1">@Model.HfWelderPower?.TM1Value.ToString("F2")</div>
+                    <div class="reading-box tm2">@Model.HfWelderPower?.TM2Value.ToString("F2")</div>
+                    <div class="reading-box tm3">@Model.HfWelderPower?.TM3Value.ToString("F2")</div>
+                    <div class="reading-box tm4">@Model.HfWelderPower?.TM4Value.ToString("F2")</div>
+                    <div class="reading-box tm7">@Model.HfWelderPower?.TM7Value.ToString("F2")</div>
+                </div>
+            </div>
+
+            <!-- Actual Frequency -->
+            <div class="parameter-row">
+                <div class="parameter-label">
+                    <span>Actual Frequency</span>
+                    <span class="unit-label">KHZ</span>
+                </div>
+                <div class="readings-container">
+                    <div class="reading-box tm1">@Model.ActualFrequency?.TM1Value.ToString("F2")</div>
+                    <div class="reading-box tm2 ">@Model.ActualFrequency?.TM2Value.ToString("F2")</div>
+                    <div class="reading-box tm3">@Model.ActualFrequency?.TM3Value.ToString("F2")</div>
+                    <div class="reading-box tm4">@Model.ActualFrequency?.TM4Value.ToString("F2")</div>
+                    <div class="reading-box tm7">@Model.ActualFrequency?.TM7Value.ToString("F2")</div>
+                </div>
+            </div>
+
+            <!-- Forming Motor Current -->
+            <div class="parameter-row">
+                <div class="parameter-label">
+                    <span>FORMING MOTOR CURRENT</span>
+                    <span class="unit-label">AMP</span>
+                </div>
+                <div class="readings-container">
+                    <div class="reading-box tm1">N/A</div>
+                    <div class="reading-box tm2 ">N/A</div>
+                    <div class="reading-box tm3">@Model.FormingMotorCurrent.TM3Value.ToString("F2")</div>
+                    <div class="reading-box tm4">N/A</div>
+                    <div class="reading-box tm7">@Model.FormingMotorCurrent.TM7Value.ToString("F2")</div>
+                </div>
+            </div>
+
+            <!-- Finpass Motor Current -->
+            <div class="parameter-row">
+                <div class="parameter-label">
+                    <span>FINPASS MOTOR CURRENT</span>
+                    <span class="unit-label">AMP</span>
+                </div>
+                <div class="readings-container">
+                    <div class="reading-box tm1">N/A</div>
+                    <div class="reading-box tm2 ">N/A</div>
+                    <div class="reading-box tm3">@Model.FinepassMotorCurrent?.TM3Value.ToString("F2")</div>
+                    <div class="reading-box tm4">N/A</div>
+                    <div class="reading-box tm7">N/A</div>
+                </div>
+            </div>
+
+            <!-- Sizing Motor Current -->
+            <div class="parameter-row">
+                <div class="parameter-label">
+                    <span>SIZING MOTOR CURRENT</span>
+                    <span class="unit-label">AMP</span>
+                </div>
+                <div class="readings-container">
+                    <div class="reading-box tm1">N/A</div>
+                    <div class="reading-box tm2 ">N/A</div>
+                    <div class="reading-box tm3">@Model.SizingMotorCurrent?.TM3Value.ToString("F2")</div>
+                    <div class="reading-box tm4">N/A</div>
+                    <div class="reading-box tm7">@Model.SizingMotorCurrent?.TM7Value.ToString("F2")</div>
+                </div>
+            </div>
+
+            <!-- EPR Motor Current -->
+            <div class="parameter-row">
+                <div class="parameter-label">
+                    <span>E.P.R. MOTOR CURRENT</span>
+                    <span class="unit-label">AMP</span>
+                </div>
+                <div class="readings-container">
+                    <div class="reading-box tm1">N/A</div>
+                    <div class="reading-box tm2 ">N/A</div>
+                    <div class="reading-box tm3">@Model.EPRMotorCurrent?.TM3Value.ToString("F2")</div>
+                    <div class="reading-box tm4">N/A</div>
+                    <div class="reading-box tm7">@Model.EPRMotorCurrent?.TM7Value.ToString("F2")</div>
+                </div>
+            </div>
+
+            <!-- TIT Motor Current -->
+            <div class="parameter-row">
+                <div class="parameter-label">
+                    <span>TT MOTOR CURRENT</span>
+                    <span class="unit-label">AMP</span>
+                </div>
+                <div class="readings-container">
+                    <div class="reading-box tm1">N/A</div>
+                    <div class="reading-box tm2 ">N/A</div>
+                    <div class="reading-box tm3">@Model.TTMotorCurrent?.TM3Value.ToString("F2")</div>
+                    <div class="reading-box tm4">N/A</div>
+                    <div class="reading-box tm7">@Model.TTMotorCurrent?.TM7Value.ToString("F2")</div>
+                </div>
+            </div>
+
+            <!-- COC Feed Motor Current -->
+            <div class="parameter-row">
+                <div class="parameter-label">
+                    <span>COC FEED MOTOR CURRENT</span>
+                    <span class="unit-label">AMP</span>
+                </div>
+                <div class="readings-container">
+                    <div class="reading-box tm1">N/A</div>
+                    <div class="reading-box tm2 ">N/A</div>
+                    <div class="reading-box tm3">N/A</div>
+                    <div class="reading-box tm4">N/A</div>
+                    <div class="reading-box tm7">N/A</div>
+                </div>
+            </div>
+
+            <!-- COC Blead Motor Current -->
+            <div class="parameter-row">
+                <div class="parameter-label">
+                    <span>COC BLEAD MOTOR CURRENT</span>
+                    <span class="unit-label">AMP</span>
+                </div>
+                <div class="readings-container">
+                    <div class="reading-box tm1">N/A</div>
+                    <div class="reading-box tm2 ">N/A</div>
+                    <div class="reading-box tm3">N/A</div>
+                    <div class="reading-box tm4">N/A</div>
+                    <div class="reading-box tm7">N/A</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+        // Function to format time remaining
+    function formatTimeRemaining(milliseconds) {
+        const seconds = Math.ceil(milliseconds / 1000);
+        return `${seconds} seconds`;
+    }
+
+    // Function to update the refresh countdown
+    function updateCountdown(nextRefreshTime) {
+        const now = new Date().getTime();
+        const timeRemaining = nextRefreshTime - now;
+
+        if (timeRemaining > 0) {
+            indicator.textContent = `Next refresh in: ${formatTimeRemaining(timeRemaining)}`;
+        }
+    }
+
+    // Function to refresh the page content
+    function refreshContent() {
+        // Show refresh in progress
+        indicator.textContent = 'Refreshing...';
+        indicator.style.backgroundColor = '#ffeb3b';
+
+        fetch(window.location.href)
+            .then(response => response.text())
+            .then(html => {
+                const temp = document.createElement('div');
+                temp.innerHTML = html;
+
+                const currentReadings = document.querySelectorAll('.readings-container .reading-box');
+                const newReadings = temp.querySelectorAll('.readings-container .reading-box');
+
+                currentReadings.forEach((box, index) => {
+                    if (newReadings[index]) {
+                        const newValue = newReadings[index].textContent;
+                        if (box.textContent !== newValue) {
+                            box.textContent = newValue;
+                            box.classList.add('highlight');
+                            setTimeout(() => box.classList.remove('highlight'), 1000);
+                        }
+                    }
+                });
+
+                // Update last refresh time and reset indicator
+                lastRefreshTime = new Date().getTime();
+                nextRefreshTime = lastRefreshTime + refreshInterval;
+                indicator.style.backgroundColor = '#f0f0f0';
+
+                // Log refresh in console
+                console.log('Page refreshed at:', new Date().toLocaleTimeString());
+            })
+            .catch(error => {
+                console.error('Error refreshing content:', error);
+                indicator.textContent = 'Refresh failed! Retrying in 60s';
+                indicator.style.backgroundColor = '#ff9999';
+            });
+    }
+
+    // Create and append CSS styles
+    const styleContent = `
+        .reading-box.highlight {
+            animation: highlightChange 1s ease-out;
+        }
+
+    @@keyframes highlightChange {
+            0% { background-color: #ffeb3b; }
+            100% { background-color: inherit; }
+        }
+
+        #refresh-indicator {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 8px 12px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            font-size: 12px;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+    `;
+
+    
+    const styleSheet = document.createElement('style');
+    styleSheet.textContent = styleContent;
+    document.head.appendChild(styleSheet);
+
+    
+    const indicator = document.createElement('div');
+    indicator.id = 'refresh-indicator';
+    document.body.appendChild(indicator);
+
+    
+    const refreshInterval = 60000; // 1 minute in milliseconds
+    let lastRefreshTime = new Date().getTime();
+    let nextRefreshTime = lastRefreshTime + refreshInterval;
+
+    
+    setInterval(refreshContent, refreshInterval);
+
+    
+    setInterval(() => updateCountdown(nextRefreshTime), 1000);
+
+   
+    refreshContent();
+
+    function redirectToPage(){
+        window.location.href = "/Dashboard/Dashboard"
+    }
+
+  // function  redirectToLoginPage() {
+  //     window.location.href ="/Home/Login"
+  // }
+
+  const logoutBtn = document.getElementById('logoutBtn');
+  logoutBtn.addEventListener("click",()=>{
+      localStorage.clear();
+      sessionStorage.clear();
+        window.location.href ="/Home/Login"
+          
+        
+    
+
+  })
+</script>
